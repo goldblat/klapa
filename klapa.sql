@@ -1,4 +1,12 @@
-CREATE OR REPLACE FUNCTION lch.cluster_patterns(source_file_name text DEFAULT ''::text, tail_source_p real DEFAULT 0.1, source_table_name text DEFAULT ''::text, source_table_column_name text DEFAULT ''::text, words_range text DEFAULT '6,20'::text, words_delimiter text DEFAULT '[\s\[]+'::text, sample_p real DEFAULT 0.5, word_occurrences_threshold integer DEFAULT 50, pattern_occurrences_threshold integer DEFAULT 50)
+CREATE OR REPLACE FUNCTION cluster_patterns(source_file_name text DEFAULT ''::text,
+                                                tail_source_p real DEFAULT 0.1,
+                                                source_table_name text DEFAULT ''::text,
+                                                source_table_column_name text DEFAULT ''::text,
+                                                words_range text DEFAULT '6,20'::text,
+                                                words_delimiter text DEFAULT '[\s\[]+'::text,
+                                                sample_p real DEFAULT 0.5,
+                                                word_occurrences_threshold integer DEFAULT 50,
+                                                pattern_occurrences_threshold integer DEFAULT 50)
  RETURNS TABLE(p double precision, pattern text, occurrences integer, num_of_words integer, sample text)
  LANGUAGE plpgsql
 AS $function$
@@ -26,8 +34,6 @@ BEGIN
   IF (tail_source_p > 1 OR tail_source_p < 0 OR sample_p > 1 OR sample_p < 0) THEN 
      RAISE EXCEPTION 'tail_source_p OR tail_source_p values are out of range (0..1)';
   END IF;
- 
-
 
   IF (source_table_name != '') THEN
      EXECUTE 'CREATE TEMPORARY VIEW source AS SELECT ' || source_table_column_name || ' AS string FROM ' || source_table_name;
