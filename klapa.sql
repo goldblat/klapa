@@ -17,7 +17,7 @@ AS $function$
   
 BEGIN
 
-  RAISE NOTICE 'START SCRIPT: %'  , timeofday()::timestamp; END IF;
+  RAISE NOTICE 'START SCRIPT: %'  , timeofday()::timestamp;
 
   IF (source_file_name != '' AND source_table_name != '') OR (source_file_name = '' AND source_table_name = '') THEN 
      RAISE EXCEPTION 'Please provide only one source for clustering: source_file_name OR source_table_name';
